@@ -1,14 +1,10 @@
 package com.dawidfrankiewicz.todo.service;
 
 import com.dawidfrankiewicz.todo.api.model.Task;
-import com.dawidfrankiewicz.todo.database.dbConnect;
-
 
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -16,8 +12,19 @@ public class TaskService {
     private List<Task> taskList;
 
     public TaskService() {
-        dbConnect db = new dbConnect();
-        taskList = db.getTasks();
+        DatabaseService db = new DatabaseService();
+        taskList = db.getTasks(1);
+        db.closeConnection();
+    }
+
+    public void updateTasks(int userId) {
+        DatabaseService db = new DatabaseService();
+        taskList = db.getTasks(userId);
+        db.closeConnection();
+    }
+
+    public List<Task> getTasks() {
+        return taskList;
     }
 
     public Optional<Task> getTask(int id) {
@@ -29,36 +36,27 @@ public class TaskService {
         return Optional.empty();
     }
 
-    public List<Task> getTasks() {
-        return taskList;
+
+    public void addTask(String title, String description) {
+        if (!title.isEmpty() && !description.isEmpty()) {
+            DatabaseService db = new DatabaseService();
+            db.addTask(1 ,title, description);
+            db.closeConnection();
+            updateTasks(1);
+        }
     }
 
-    // public Optional<Task> addTask(String title, String description) {
-    //     if (!title.isEmpty() && !description.isEmpty()) {
-    //         Task addedTask = new Task(title, description);
-    //         taskList.add(addedTask);
-    //         return Optional.of(addedTask);
-    //     }
-    //     return Optional.empty();
-    // }
+    public void deleteTask(int id) {
+        DatabaseService db = new DatabaseService();
+        db.deleteTask(1, id);
+        db.closeConnection();
+        updateTasks(1);
+    }
 
-    // public Optional<Task> deleteTask(UUID id) {
-    //     for (Task task : taskList) {
-    //         if (task.getId().equals(id)) {
-    //             taskList.remove(task);
-    //             return Optional.of(task);
-    //         }
-    //     }
-    //     return Optional.empty();
-    // }
-
-    // public Optional<Task> editTask(UUID id, String title, String description) {
-    //     for (Task task : taskList) {
-    //         if (task.getId().equals(id)) {
-    //             task.setDescription(description);
-    //             task.setTitle(title);
-    //         }
-    //     }
-    //     return Optional.empty();
-    // }
+    public void editTask(int id, String title, String description) {
+        DatabaseService db = new DatabaseService();
+        db.editTask(1, id, title, description);
+        db.closeConnection();
+        updateTasks(1);
+    }
 }

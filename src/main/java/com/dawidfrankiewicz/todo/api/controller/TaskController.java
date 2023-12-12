@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 import java.util.List;
@@ -37,22 +36,18 @@ public class TaskController {
         return taskService.getTasks();
     }
 
-    // @PostMapping("/task")
-    // public Task addTask(@RequestBody String title, String description) {
-    //     return taskService.addTask(title, description).orElse(null);
-    // }
+    @PostMapping("/task")
+    public void addTask(@RequestParam String title, String description) {
+        taskService.addTask(title, description);
+    }
 
-    // @DeleteMapping("/task")
-    // public Task deleteTask(@RequestParam UUID id) {
-    //     taskService.deleteTask(id);
-    //     Optional<Task> task = taskService.deleteTask(id);
-    //     return task.orElse(null);
-    // }
+    @DeleteMapping("/task")
+    public void deleteTask(@RequestParam int id) {
+        taskService.deleteTask(id);
+    }
 
-    // @PutMapping("/task")
-    // public Task editTask(
-    //         @RequestBody String title, String description,
-    //         @RequestParam UUID id) {
-    //     return taskService.editTask(id, title, description).orElse(null);
-    // }
+    @PutMapping("/task")
+    public void editTask(@RequestParam int id, String title, String description) {
+        taskService.editTask(id, title, description);
+    }
 }
