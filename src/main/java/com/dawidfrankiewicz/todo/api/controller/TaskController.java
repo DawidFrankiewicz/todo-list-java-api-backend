@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.UUID;
 import java.util.Optional;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class TaskController {
     }
 
     @GetMapping("/task")
-    public Task getTask(@RequestParam UUID id) {
+    public Task getTask(@RequestParam int id) {
         Optional<Task> task = taskService.getTask(id);
         return task.orElse(null);
     }
@@ -38,22 +37,22 @@ public class TaskController {
         return taskService.getTasks();
     }
 
-    @PostMapping("/task")
-    public Task addTask(@RequestBody String title, String description) {
-        return taskService.addTask(title, description).orElse(null);
-    }
+    // @PostMapping("/task")
+    // public Task addTask(@RequestBody String title, String description) {
+    //     return taskService.addTask(title, description).orElse(null);
+    // }
 
-    @DeleteMapping("/task")
-    public Task deleteTask(@RequestParam UUID id) {
-        taskService.deleteTask(id);
-        Optional<Task> task = taskService.deleteTask(id);
-        return task.orElse(null);
-    }
+    // @DeleteMapping("/task")
+    // public Task deleteTask(@RequestParam UUID id) {
+    //     taskService.deleteTask(id);
+    //     Optional<Task> task = taskService.deleteTask(id);
+    //     return task.orElse(null);
+    // }
 
-    @PutMapping("/task")
-    public Task editTask(
-            @RequestBody String title, String description,
-            @RequestParam UUID id) {
-        return taskService.editTask(id, title, description).orElse(null);
-    }
+    // @PutMapping("/task")
+    // public Task editTask(
+    //         @RequestBody String title, String description,
+    //         @RequestParam UUID id) {
+    //     return taskService.editTask(id, title, description).orElse(null);
+    // }
 }
