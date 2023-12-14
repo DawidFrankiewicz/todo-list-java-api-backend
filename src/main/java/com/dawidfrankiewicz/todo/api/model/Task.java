@@ -9,15 +9,15 @@ public class Task {
     public int getId() {
         return this.id;
     }
-    
+
     public String getTitle() {
         return this.title;
     }
-    
+
     public String getDescription() {
         return this.description;
     }
-    
+
     public boolean getIsDone() {
         return this.isDone;
     }
@@ -25,11 +25,11 @@ public class Task {
     public void setId(int id) {
         this.id = id;
     }
-    
+
     public void setTitle(String title) {
         this.title = title;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }

@@ -42,7 +42,7 @@ public class TaskController {
     public Task getTask(@PathVariable int id) {
         Task recivedTask = taskService.getTask(id);
 
-        if(recivedTask.getId() == 0 && recivedTask.getTitle() == null) {
+        if (recivedTask.getId() == 0 && recivedTask.getTitle() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id: " + id + " not found");
         }
 
