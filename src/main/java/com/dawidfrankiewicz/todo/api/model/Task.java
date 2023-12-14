@@ -4,21 +4,7 @@ public class Task {
     private int id;
     private String title;
     private String description;
-    private boolean done;
-
-    public Task(int id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.done = false;
-    }
-
-    public Task(int id, String title, String description, boolean done) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.done = done;
-    }
+    private boolean isDone;
 
     public int getId() {
         return this.id;
@@ -32,15 +18,23 @@ public class Task {
         return this.description;
     }
     
-    public boolean isDone() {
-        return this.done;
+    public boolean getIsDone() {
+        return this.isDone;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public void setTitle(String title) {
         this.title = title;
     }
-
+    
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
 }
