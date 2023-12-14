@@ -17,12 +17,21 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public void registerUser(@RequestBody User user) {
-
+    private void validateUser(User user) {
         if (user.getUserName() == null || user.getEmail() == null || user.getPassword() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user data");
         }
+    }
+
+    @PostMapping("/register")
+    public void registerUser(@RequestBody User user) {
+
+        // Check if user with this email already exists
+        if(authenticationService.getUser(user.getEmail()).getEmail() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists");
+        }
+
+        validateUser(user);
 
         authenticationService.registerUser(user);
     }
