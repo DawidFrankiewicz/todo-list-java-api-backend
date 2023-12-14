@@ -3,7 +3,6 @@ package com.dawidfrankiewicz.todo.service;
 import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.database.DatabaseConnection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,6 @@ import java.sql.SQLException;
 @Service
 public class AuthenticationService {
     private Connection connection;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public AuthenticationService() {

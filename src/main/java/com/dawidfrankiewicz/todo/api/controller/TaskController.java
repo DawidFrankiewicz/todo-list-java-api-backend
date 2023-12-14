@@ -20,12 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 public class TaskController {
-    private TaskService taskService;
-
     @Autowired
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
+    private TaskService taskService;
 
     private void validateTask(Task task) {
         if (task.getTitle() == null || task.getDescription() == null) {
