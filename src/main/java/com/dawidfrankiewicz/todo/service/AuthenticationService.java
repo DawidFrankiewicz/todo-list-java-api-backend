@@ -3,7 +3,7 @@ package com.dawidfrankiewicz.todo.service;
 import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.database.DatabaseConnection;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 @Service
 public class AuthenticationService {
     private Connection connection;
-    private PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthenticationService() {
         connection = new DatabaseConnection().getConnection();
