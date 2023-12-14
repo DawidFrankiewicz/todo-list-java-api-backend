@@ -1,34 +1,29 @@
 package com.dawidfrankiewicz.todo.api.model;
 
-import java.util.UUID;
-
 public class Task {
-    private UUID id;
+    private int id;
     private String title;
     private String description;
-    private boolean done;
+    private boolean isDone;
 
-    public Task(String title, String description) {
-        this.id = UUID.randomUUID();
-        this.title = title;
-        this.description = description;
-        this.done = false;
-    }
-
-    public UUID getId() {
+    public int getId() {
         return this.id;
     }
-    
+
     public String getTitle() {
         return this.title;
     }
-    
+
     public String getDescription() {
         return this.description;
     }
-    
-    public boolean isDone() {
-        return this.done;
+
+    public boolean getIsDone() {
+        return this.isDone;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setTitle(String title) {
@@ -37,5 +32,9 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
 }
