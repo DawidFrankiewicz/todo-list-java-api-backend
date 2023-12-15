@@ -35,9 +35,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/login")
-    public String loginUser(@RequestBody User user) {
-        TaskService.setUSER_ID(authenticationService.loginUser(user));
-        return "successfully logged in";
+    public void loginUser(@RequestBody User user) {
+        TaskService.setUserId(authenticationService.loginUser(user));
     }
 
 }

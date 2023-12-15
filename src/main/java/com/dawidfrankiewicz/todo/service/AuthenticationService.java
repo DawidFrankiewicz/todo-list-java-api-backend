@@ -67,9 +67,7 @@ public class AuthenticationService {
         }
     }
 
-    public int loginUser(User inputData) {
-
-        User user = new User();
+    public int loginUser(User user) {
         String query = "SELECT * FROM users";
 
         try {
@@ -78,22 +76,21 @@ public class AuthenticationService {
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
+                User currentUser = new User();
 
+                currentUser.setId(resultSet.getInt("id"));
+                currentUser.setUserName(resultSet.getString("username"));
+                currentUser.setEmail(resultSet.getString("email"));
+                currentUser.setPassword(resultSet.getString("password"));
 
-                user.setId(resultSet.getInt("id"));
-                user.setUserName(resultSet.getString("username"));
-                user.setEmail(resultSet.getString("email"));
-                user.setPassword(resultSet.getString("password"));
-
-
-                if (user.getUserName().equals(inputData.getUserName()) && passwordEncoder.matches(inputData.getPassword(), user.getPassword())) {
-                    return user.getId();
+                if (currentUser.getUserName().equals(currentUser.getUserName()) && passwordEncoder.matches(user.getPassword(), currentUser.getPassword())) {
+                    return currentUser.getId();
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect Username or password");
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
     }
 }
 

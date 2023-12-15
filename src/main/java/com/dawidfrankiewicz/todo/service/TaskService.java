@@ -10,24 +10,24 @@ import java.util.List;
 
 @Service
 public class TaskService {
-    private static int USER_ID = 1;
+    private static int userId;
     private Connection connection;
 
     public TaskService() {
         connection = new DatabaseConnection().getConnection();
     }
 
-    public static int getUSER_ID() {
-        return USER_ID;
+    public static int getUserId() {
+        return userId;
     }
 
-    public static void setUSER_ID(int USER_ID) {
-        TaskService.USER_ID = USER_ID;
+    public static void setUserId(int userId) {
+        TaskService.userId = userId;
     }
 
     public List<Task> getTasks() {
         List<Task> taskList = new ArrayList<>();
-        String query = "SELECT * FROM tasks WHERE user_id = " + USER_ID;
+        String query = "SELECT * FROM tasks WHERE user_id = " + userId;
 
         try {
             Statement statement = connection.createStatement();
@@ -51,7 +51,7 @@ public class TaskService {
 
     public Task getTask(int id) {
         Task task = new Task();
-        String query = "SELECT * FROM tasks WHERE user_id = " + USER_ID + " AND id = ?";
+        String query = "SELECT * FROM tasks WHERE user_id = " + userId + " AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -73,7 +73,7 @@ public class TaskService {
     }
 
     public void addTask(Task task) {
-        String query = "INSERT INTO tasks (user_id, title, description, isDone) VALUES (" + USER_ID + ", ?, ?, ?)";
+        String query = "INSERT INTO tasks (user_id, title, description, isDone) VALUES (" + userId + ", ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -88,7 +88,7 @@ public class TaskService {
     }
 
     public void deleteTask(int id) {
-        String query = "DELETE FROM tasks WHERE user_id = " + USER_ID + " AND id = ?";
+        String query = "DELETE FROM tasks WHERE user_id = " + userId + " AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -101,7 +101,7 @@ public class TaskService {
     }
 
     public void editTask(int id, Task task) {
-        String query = "UPDATE tasks SET title = ?, description = ? WHERE user_id = " + USER_ID + " AND id = ?";
+        String query = "UPDATE tasks SET title = ?, description = ? WHERE user_id = " + userId + " AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
