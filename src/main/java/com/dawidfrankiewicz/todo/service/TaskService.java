@@ -2,26 +2,27 @@ package com.dawidfrankiewicz.todo.service;
 
 import com.dawidfrankiewicz.todo.api.model.Task;
 import com.dawidfrankiewicz.todo.database.DatabaseConnection;
-
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.sql.*;
 import java.util.ArrayList;
-
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
+import java.util.List;
 
 @Service
 public class TaskService {
-    // TODO: User id is hardcoded for now
-    private final int USER_ID = 1;
+    private static int USER_ID = 1;
     private Connection connection;
 
     public TaskService() {
         connection = new DatabaseConnection().getConnection();
+    }
+
+    public static int getUSER_ID() {
+        return USER_ID;
+    }
+
+    public static void setUSER_ID(int USER_ID) {
+        TaskService.USER_ID = USER_ID;
     }
 
     public List<Task> getTasks() {
