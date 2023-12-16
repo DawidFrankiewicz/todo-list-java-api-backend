@@ -16,17 +16,15 @@ import java.sql.PreparedStatement;
 
 @Service
 public class TaskService {
-    // TODO: User id is hardcoded for now
-    private final int USER_ID = 1;
     private Connection connection;
 
     public TaskService() {
         connection = new DatabaseConnection().getConnection();
     }
 
-    public List<Task> getTasks() {
+    public List<Task> getTasks(int userId) {
         List<Task> taskList = new ArrayList<>();
-        String query = "SELECT * FROM tasks WHERE user_id = " + USER_ID;
+        String query = "SELECT * FROM tasks WHERE user_id = " + userId;
 
         try {
             Statement statement = connection.createStatement();
@@ -48,13 +46,14 @@ public class TaskService {
         return taskList;
     }
 
-    public Task getTask(int id) {
+    public Task getTask(int userId, int id) {
         Task task = new Task();
-        String query = "SELECT * FROM tasks WHERE user_id = " + USER_ID + " AND id = ?";
+        String query = "SELECT * FROM tasks WHERE user_id = ? AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
+            statement.setInt(2, id);
 
             ResultSet resultSet = statement.executeQuery();
 
@@ -71,14 +70,15 @@ public class TaskService {
         return task;
     }
 
-    public void addTask(Task task) {
-        String query = "INSERT INTO tasks (user_id, title, description, isDone) VALUES (" + USER_ID + ", ?, ?, ?)";
+    public void addTask(int userId, Task task) {
+        String query = "INSERT INTO tasks (user_id, title, description, isDone) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setString(1, task.getTitle());
-            statement.setString(2, task.getDescription());
-            statement.setBoolean(3, task.getIsDone());
+            statement.setInt(1, userId);
+            statement.setString(2, task.getTitle());
+            statement.setString(3, task.getDescription());
+            statement.setBoolean(4, task.getIsDone());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -86,12 +86,13 @@ public class TaskService {
         }
     }
 
-    public void deleteTask(int id) {
-        String query = "DELETE FROM tasks WHERE user_id = " + USER_ID + " AND id = ?";
+    public void deleteTask(int userId, int id) {
+        String query = "DELETE FROM tasks WHERE user_id = ? AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, id);
+            statement.setInt(1, userId);
+            statement.setInt(2, id);
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -99,14 +100,15 @@ public class TaskService {
         }
     }
 
-    public void editTask(int id, Task task) {
-        String query = "UPDATE tasks SET title = ?, description = ? WHERE user_id = " + USER_ID + " AND id = ?";
+    public void editTask(int userId, int id, Task task) {
+        String query = "UPDATE tasks SET title = ?, description = ? WHERE user_id = ? AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setInt(3, id);
+            statement.setInt(3, userId);
+            statement.setInt(4, id);
 
             statement.executeUpdate();
         } catch (SQLException e) {

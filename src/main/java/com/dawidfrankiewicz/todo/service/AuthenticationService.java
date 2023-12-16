@@ -5,8 +5,6 @@ import com.dawidfrankiewicz.todo.database.DatabaseConnection;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.http.HttpStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,7 +22,30 @@ public class AuthenticationService {
         connection = new DatabaseConnection().getConnection();
     }
 
-    public User getUser(String email) {
+    public User getUserByName(String userName) {
+        User user = new User();
+        String query = "SELECT * FROM users WHERE userName = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, userName);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt("id"));
+                user.setEmail(resultSet.getString("email"));
+                user.setUserName(resultSet.getString("username"));
+                user.setPassword(resultSet.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+    }
+
+    public User getUserByEmail(String email) {
         User user = new User();
         String query = "SELECT * FROM users WHERE email = ?";
 
@@ -73,8 +94,13 @@ public class AuthenticationService {
     }
 
     public void registerUser(User user) {
-        if(getUser(user.getEmail()).getEmail() != null) {
+        // Check if user with this email already exists
+        if(getUserByEmail(user.getEmail()).getEmail() != null) {
             throw new RuntimeException("User with this email already exists");
+        }
+        // Check if user with this username already exists
+        if(getUserByName(user.getUserName()).getUserName() != null) {
+            throw new RuntimeException("User with this username already exists");
         }
 
         String query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
@@ -91,31 +117,5 @@ public class AuthenticationService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public int loginUser(User user) throws ResponseStatusException {
-        String query = "SELECT * FROM users";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(query);
-
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                User currentUser = new User();
-
-                currentUser.setId(resultSet.getInt("id"));
-                currentUser.setEmail(resultSet.getString("email"));
-                currentUser.setUserName(resultSet.getString("username"));
-                currentUser.setPassword(resultSet.getString("password"));
-
-                if (currentUser.getUserName().equals(currentUser.getUserName()) && passwordEncoder.matches(user.getPassword(), currentUser.getPassword())) {
-                    return currentUser.getId();
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Incorrect username or password");
     }
 }

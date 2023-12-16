@@ -5,7 +5,6 @@ import com.dawidfrankiewicz.todo.service.AuthenticationService;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,19 +25,18 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public void registerUser(@RequestBody User user) {
+        validateUser(user);
 
         // Check if user with this email already exists
-        if(authenticationService.getUser(user.getUserName()).getUserName() != null) {
+        if(authenticationService.getUserByEmail(user.getUserName()).getUserName() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists");
         }
 
-        validateUser(user);
+        // Check if user with this username already exists
+        if(authenticationService.getUserByName(user.getUserName()).getUserName() != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this username already exists");
+        }
 
         authenticationService.registerUser(user);
-    }
-
-    @GetMapping("/login")
-    public void loginUser(@RequestBody User user) {
-        // TaskService.setUserId(authenticationService.loginUser(user));
     }
 }
