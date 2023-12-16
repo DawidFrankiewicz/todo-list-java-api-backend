@@ -42,7 +42,7 @@ public class TaskController {
         String currentPrincipalName = authentication.getName();
         User authUser = authenticationService.getUserByName(currentPrincipalName);
 
-        if(authUser.getId() == 0){
+        if (authUser.getId() == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authorized");
         }
 
@@ -60,10 +60,10 @@ public class TaskController {
     public Task getTask(@PathVariable int id) throws ResponseStatusException {
         int userId = getAuthorizedUserId();
 
-        Task recivedTask = taskService.getTask(userId ,id);
+        Task recivedTask = taskService.getTask(userId, id);
 
-        if (recivedTask.getId() == 0 && recivedTask.getTitle() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with was not found");
+        if (recivedTask.getId() == null && recivedTask.getTitle() == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
         }
 
         return recivedTask;
@@ -86,6 +86,9 @@ public class TaskController {
     public void editTask(@PathVariable int id, @RequestBody Task task) {
         int userId = getAuthorizedUserId();
         validateTask(task);
+        if (task.getIsDone() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title or description cannot be null");
+        }
         taskService.editTask(userId, id, task);
     }
 }

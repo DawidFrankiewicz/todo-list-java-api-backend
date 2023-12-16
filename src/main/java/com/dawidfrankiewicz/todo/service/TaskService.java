@@ -102,14 +102,15 @@ public class TaskService {
     }
 
     public void editTask(int userId, int id, Task task) {
-        String query = "UPDATE tasks SET title = ?, description = ? WHERE user_id = ? AND id = ?";
+        String query = "UPDATE tasks SET title = ?, description = ?, isDone = ? WHERE user_id = ? AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setInt(3, userId);
-            statement.setInt(4, id);
+            statement.setBoolean(3, task.getIsDone());
+            statement.setInt(4, userId);
+            statement.setInt(5, id);
 
             statement.executeUpdate();
         } catch (SQLException e) {

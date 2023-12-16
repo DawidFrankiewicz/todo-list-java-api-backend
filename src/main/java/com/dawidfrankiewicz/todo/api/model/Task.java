@@ -1,12 +1,12 @@
 package com.dawidfrankiewicz.todo.api.model;
 
 public class Task {
-    private int id;
+    private Integer id;
     private String title;
     private String description;
-    private boolean isDone;
+    private Boolean isDone;
 
-    public int getId() {
+    public Integer getId() {
         return this.id;
     }
 
@@ -18,11 +18,11 @@ public class Task {
         return this.description;
     }
 
-    public boolean getIsDone() {
+    public Boolean getIsDone() {
         return this.isDone;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,7 +34,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setIsDone(boolean isDone) {
+    public void setIsDone(Boolean isDone) {
         this.isDone = isDone;
     }
 }
