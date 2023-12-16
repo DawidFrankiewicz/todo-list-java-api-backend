@@ -36,7 +36,7 @@ public class AuthenticationService {
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setUserName(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
+                user.setPassword("{bcrypt}"+resultSet.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class AuthenticationService {
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setUserName(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
+                user.setPassword("{bcrypt}"+resultSet.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class AuthenticationService {
                 currentUser.setId(resultSet.getInt("id"));
                 currentUser.setEmail(resultSet.getString("email"));
                 currentUser.setUserName(resultSet.getString("username"));
-                currentUser.setPassword(resultSet.getString("password"));
+                currentUser.setPassword("{bcrypt}"+resultSet.getString("password"));
 
                 users.add(currentUser);
             }

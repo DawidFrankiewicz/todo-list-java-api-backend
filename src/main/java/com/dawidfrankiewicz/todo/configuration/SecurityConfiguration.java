@@ -44,11 +44,9 @@ public class SecurityConfiguration {
         List<com.dawidfrankiewicz.todo.api.model.User> users = authenticationService.getUsers();
         List<UserDetails> usersDetails = new ArrayList<>();
         
-        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         for (com.dawidfrankiewicz.todo.api.model.User currentUser : users) {
-            UserDetails userDetails = User.builder()
-                .passwordEncoder((password) -> (String) encoder.encode(password))
-                .username(currentUser.getUserName())
+            UserDetails userDetails = User
+                .withUsername(currentUser.getUserName())
                 .password(currentUser.getPassword())
                 .roles("USER")
                 .build();
