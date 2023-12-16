@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @RestController
-@RequestMapping("/task")
+@RequestMapping("/api/v1/task")
 public class TaskController {
     @Autowired
     private TaskService taskService;
@@ -35,11 +35,11 @@ public class TaskController {
     }
 
     @GetMapping("/{id}")
-    public Task getTask(@PathVariable int id) {
+    public Task getTask(@PathVariable int id) throws ResponseStatusException {
         Task recivedTask = taskService.getTask(id);
 
         if (recivedTask.getId() == 0 && recivedTask.getTitle() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id: " + id + " not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task with id: " + id + " was not found");
         }
 
         return recivedTask;
