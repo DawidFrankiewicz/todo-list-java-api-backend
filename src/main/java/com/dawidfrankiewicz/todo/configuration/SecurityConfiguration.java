@@ -1,6 +1,5 @@
 package com.dawidfrankiewicz.todo.configuration;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -33,9 +29,12 @@ public class SecurityConfiguration {
         http
             .authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
-                    .requestMatchers("/api/**").hasRole("USER")
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/api/*/auth/register").permitAll()
+                .requestMatchers("/api/**").hasRole("USER")
             )
             .httpBasic(Customizer.withDefaults()).csrf((csrf) -> csrf.disable());
+        
         return http.build();
     }
 
