@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
 
-import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,11 +23,13 @@ public class TaskService {
 
     public List<Task> getTasks(int userId) {
         List<Task> taskList = new ArrayList<>();
-        String query = "SELECT * FROM tasks WHERE user_id = " + userId;
+        String query = "SELECT * FROM tasks WHERE user_id = ?";
 
         try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(query);
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 Task newTask = new Task();
