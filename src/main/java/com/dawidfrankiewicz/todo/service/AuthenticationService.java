@@ -19,7 +19,7 @@ public class AuthenticationService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthenticationService() {
-        connection = new DatabaseConnection().getConnection();
+        connection = DatabaseConnection.getConnection();
     }
 
     public User getUserByName(String userName) {

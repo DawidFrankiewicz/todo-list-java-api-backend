@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private static final String dbPassword = "";
     private static Connection connection;
 
-    public DatabaseConnection() {
+    private static void loadConnection() {
         try {
             connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
         } catch (SQLException e) {
@@ -18,11 +18,15 @@ public class DatabaseConnection {
         }
     }
 
-    public Connection getConnection() {
+    public static Connection getConnection() {
+        if (connection == null) {
+            loadConnection();
+        }
+
         return connection;
     }
 
-    public void closeConnection() {
+    public static void closeConnection() {
         try {
             connection.close();
         } catch (Exception e) {

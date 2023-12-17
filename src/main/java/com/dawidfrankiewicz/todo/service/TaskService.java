@@ -18,7 +18,7 @@ public class TaskService {
     private Connection connection;
 
     public TaskService() {
-        connection = new DatabaseConnection().getConnection();
+        connection = DatabaseConnection.getConnection();
     }
 
     public List<Task> getTasks(int userId) {
