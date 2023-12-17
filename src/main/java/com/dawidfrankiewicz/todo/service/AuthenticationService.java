@@ -36,7 +36,7 @@ public class AuthenticationService {
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setUserName(resultSet.getString("username"));
-                user.setPassword("{bcrypt}"+resultSet.getString("password"));
+                user.setPassword("{bcrypt}" + resultSet.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -59,7 +59,7 @@ public class AuthenticationService {
                 user.setId(resultSet.getInt("id"));
                 user.setEmail(resultSet.getString("email"));
                 user.setUserName(resultSet.getString("username"));
-                user.setPassword("{bcrypt}"+resultSet.getString("password"));
+                user.setPassword("{bcrypt}" + resultSet.getString("password"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,7 +82,7 @@ public class AuthenticationService {
                 currentUser.setId(resultSet.getInt("id"));
                 currentUser.setEmail(resultSet.getString("email"));
                 currentUser.setUserName(resultSet.getString("username"));
-                currentUser.setPassword("{bcrypt}"+resultSet.getString("password"));
+                currentUser.setPassword("{bcrypt}" + resultSet.getString("password"));
 
                 users.add(currentUser);
             }
@@ -93,18 +93,18 @@ public class AuthenticationService {
         return users;
     }
 
-    public void registerUser(User user) {
+    public void registerUser(User user) throws IllegalArgumentException {
         // Check if user with this email already exists
-        if(getUserByEmail(user.getEmail()).getEmail() != null) {
-            throw new RuntimeException("User with this email already exists");
+        if (getUserByEmail(user.getEmail()).getEmail() != null) {
+            throw new IllegalArgumentException("User with this email already exists");
         }
         // Check if user with this username already exists
-        if(getUserByName(user.getUserName()).getUserName() != null) {
-            throw new RuntimeException("User with this username already exists");
+        if (getUserByName(user.getUserName()).getUserName() != null) {
+            throw new IllegalArgumentException("User with this username already exists");
         }
 
         String query = "INSERT INTO users (email, username, password) VALUES (?, ?, ?)";
-        
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
 
         try {

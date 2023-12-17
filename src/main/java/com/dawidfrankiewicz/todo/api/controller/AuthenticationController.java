@@ -26,18 +26,11 @@ public class AuthenticationController {
     @PostMapping("/register")
     public void registerUser(@RequestBody User user) {
         validateUser(user);
-        
-        // Check if user with this email already exists
-        if(authenticationService.getUserByEmail(user.getEmail()).getEmail() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this email already exists");
+
+        try{
+            authenticationService.registerUser(user);
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
-        // Check if user with this username already exists
-        if(authenticationService.getUserByName(user.getUserName()).getUserName() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with this username already exists");
-        }
-
-
-        authenticationService.registerUser(user);
     }
 }
