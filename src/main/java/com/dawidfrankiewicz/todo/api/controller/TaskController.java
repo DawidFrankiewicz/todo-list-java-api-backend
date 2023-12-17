@@ -32,8 +32,8 @@ public class TaskController {
     private AuthenticationService authenticationService;
 
     private void validateTask(Task task) {
-        if (task.getTitle() == null || task.getDescription() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title or description cannot be null");
+        if (task.getTitle() == null || task.getDescription() == null || task.getIsDone() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Object is not valid: {title, description, isDone}");
         }
     }
 
@@ -73,6 +73,7 @@ public class TaskController {
     public void addTask(@RequestBody Task task) {
         int userId = getAuthorizedUserId();
         validateTask(task);
+
         taskService.addTask(userId, task);
     }
 
@@ -86,9 +87,7 @@ public class TaskController {
     public void editTask(@PathVariable int id, @RequestBody Task task) {
         int userId = getAuthorizedUserId();
         validateTask(task);
-        if (task.getIsDone() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Title or description cannot be null");
-        }
+        
         taskService.editTask(userId, id, task);
     }
 }
