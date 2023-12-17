@@ -27,14 +27,13 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests((authorizeHttpRequests) ->
-                authorizeHttpRequests
+            .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                 .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/*/auth/register").permitAll()
-                .requestMatchers("/api/**").hasRole("USER")
-            )
-            .httpBasic(Customizer.withDefaults()).csrf((csrf) -> csrf.disable());
-        
+                .requestMatchers("/api/**").hasRole("USER"))
+            .httpBasic(Customizer.withDefaults())
+            .csrf((csrf) -> csrf.disable());
+
         return http.build();
     }
 
@@ -42,7 +41,7 @@ public class SecurityConfiguration {
     public UserDetailsService userDetailsService() {
         List<com.dawidfrankiewicz.todo.api.model.User> users = authenticationService.getUsers();
         List<UserDetails> usersDetails = new ArrayList<>();
-        
+
         for (com.dawidfrankiewicz.todo.api.model.User currentUser : users) {
             UserDetails userDetails = User
                 .withUsername(currentUser.getUserName())
