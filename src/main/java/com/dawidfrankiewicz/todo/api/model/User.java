@@ -1,10 +1,20 @@
 package com.dawidfrankiewicz.todo.api.model;
 
+import java.util.regex.Pattern;
+
 public class User {
+
+    private final static String regexEmailPattern = "^(.+)@(\\S+)$";
     private Integer id;
     private String userName;
     private String email;
     private String password;
+
+    public boolean validateEmail() {
+        return Pattern.compile(regexEmailPattern)
+                .matcher(email)
+                .matches();
+    }
 
     public Integer getId() {
         return id;
