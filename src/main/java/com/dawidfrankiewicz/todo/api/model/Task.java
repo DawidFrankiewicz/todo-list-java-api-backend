@@ -4,7 +4,7 @@ public class Task {
     private Integer id;
     private String title;
     private String description;
-    private Boolean isDone;
+    private String status;
 
     public Integer getId() {
         return this.id;
@@ -18,8 +18,8 @@ public class Task {
         return this.description;
     }
 
-    public Boolean getIsDone() {
-        return this.isDone;
+    public String getStatus() {
+        return this.status;
     }
 
     public void setId(Integer id) {
@@ -34,7 +34,7 @@ public class Task {
         this.description = description;
     }
 
-    public void setIsDone(Boolean isDone) {
-        this.isDone = isDone;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

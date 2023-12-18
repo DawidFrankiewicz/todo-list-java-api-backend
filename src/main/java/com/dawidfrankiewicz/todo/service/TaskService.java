@@ -36,7 +36,7 @@ public class TaskService {
                 newTask.setId(resultSet.getInt("id"));
                 newTask.setTitle(resultSet.getString("title"));
                 newTask.setDescription(resultSet.getString("description"));
-                newTask.setIsDone(resultSet.getBoolean("isDone"));
+                newTask.setStatus(resultSet.getString("status"));
 
                 taskList.add(newTask);
             }
@@ -62,7 +62,7 @@ public class TaskService {
                 task.setId(resultSet.getInt("id"));
                 task.setTitle(resultSet.getString("title"));
                 task.setDescription(resultSet.getString("description"));
-                task.setIsDone(resultSet.getBoolean("isDone"));
+                task.setStatus(resultSet.getString("status"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,14 +72,14 @@ public class TaskService {
     }
 
     public void addTask(int userId, Task task) {
-        String query = "INSERT INTO tasks (user_id, title, description, isDone) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO tasks (user_id, title, description, status) VALUES (?, ?, ?, ?)";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setInt(1, userId);
             statement.setString(2, task.getTitle());
             statement.setString(3, task.getDescription());
-            statement.setBoolean(4, task.getIsDone());
+            statement.setString(4, task.getStatus());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -102,13 +102,13 @@ public class TaskService {
     }
 
     public void editTask(int userId, int id, Task task) {
-        String query = "UPDATE tasks SET title = ?, description = ?, isDone = ? WHERE user_id = ? AND id = ?";
+        String query = "UPDATE tasks SET title = ?, description = ?, status = ? WHERE user_id = ? AND id = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, task.getTitle());
             statement.setString(2, task.getDescription());
-            statement.setBoolean(3, task.getIsDone());
+            statement.setString(3, task.getStatus());
             statement.setInt(4, userId);
             statement.setInt(5, id);
 
