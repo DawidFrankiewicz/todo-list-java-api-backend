@@ -32,8 +32,8 @@ public class TaskController {
     private AuthenticationService authenticationService;
 
     private void validateTask(Task task) {
-        if (task.getTitle() == null || task.getDescription() == null || task.getIsDone() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Object is not valid: {title, description, isDone}");
+        if (task.getTitle() == null || task.getDescription() == null || task.getStatus() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Object is not valid: {title, description, status}");
         }
     }
 
@@ -87,7 +87,7 @@ public class TaskController {
     public void editTask(@PathVariable int id, @RequestBody Task task) {
         int userId = getAuthorizedUserId();
         validateTask(task);
-        
+
         taskService.editTask(userId, id, task);
     }
 }
