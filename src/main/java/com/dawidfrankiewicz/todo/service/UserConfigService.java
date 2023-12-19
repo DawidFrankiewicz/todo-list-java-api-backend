@@ -2,7 +2,7 @@ package com.dawidfrankiewicz.todo.service;
 
 import com.dawidfrankiewicz.todo.api.model.Status;
 import com.dawidfrankiewicz.todo.database.DatabaseConnection;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
@@ -14,8 +14,6 @@ import java.util.List;
 
 @Service
 public class UserConfigService {
-    @Autowired
-    private SecurityService securityService;
     private Connection connection;
 
     public UserConfigService() {

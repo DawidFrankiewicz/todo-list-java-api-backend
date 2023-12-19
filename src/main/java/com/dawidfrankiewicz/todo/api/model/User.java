@@ -2,15 +2,24 @@ package com.dawidfrankiewicz.todo.api.model;
 
 import java.util.regex.Pattern;
 
-public class User {
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+public class User {
     private final static String regexEmailPattern = "^(.+)@(\\S+)$";
+
     private Integer id;
     private String userName;
     private String email;
     private String password;
 
-    public boolean validateEmail() {
+    public User(String userName, String email, String password) {
+        this.userName = userName;
+        setEmail(email);
+        this.password = password;
+    }
+
+    private boolean validateEmail(String email) {
         return Pattern.compile(regexEmailPattern)
                 .matcher(email)
                 .matches();
@@ -37,7 +46,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = validateEmail(email) ? email : null;
     }
 
     public String getPassword() {

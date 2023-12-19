@@ -18,11 +18,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 
 import com.dawidfrankiewicz.todo.service.AuthenticationService;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfiguration {
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

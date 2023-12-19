@@ -3,7 +3,9 @@ package com.dawidfrankiewicz.todo.api.controller;
 import com.dawidfrankiewicz.todo.api.model.Task;
 import com.dawidfrankiewicz.todo.service.SecurityService;
 import com.dawidfrankiewicz.todo.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,11 +15,10 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/task")
+@RequiredArgsConstructor
 public class TaskController {
-    @Autowired
-    private TaskService taskService;
-    @Autowired
-    private SecurityService securityService;
+    private final TaskService taskService;
+    private final SecurityService securityService;
 
     private void validateTask(Task task) {
         if (task.getTitle() == null || task.getDescription() == null || task.getStatus() == null) {

@@ -3,7 +3,9 @@ package com.dawidfrankiewicz.todo.api.controller;
 import com.dawidfrankiewicz.todo.api.model.Status;
 import com.dawidfrankiewicz.todo.service.SecurityService;
 import com.dawidfrankiewicz.todo.service.UserConfigService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,11 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/user/config")
+@RequiredArgsConstructor
 public class UserConfigController {
-    @Autowired
-    UserConfigService userConfigService;
-    @Autowired
-    private SecurityService securityService;
+    private final UserConfigService userConfigService;
+    private final SecurityService securityService;
 
     private void validateStatus(Status status) {
         if (status.getStatus() == null) {
