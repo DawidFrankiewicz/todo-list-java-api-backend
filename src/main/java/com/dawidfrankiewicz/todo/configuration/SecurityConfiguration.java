@@ -46,7 +46,7 @@ public class SecurityConfiguration {
 
         for (com.dawidfrankiewicz.todo.api.model.User currentUser : users) {
             UserDetails userDetails = User
-                .withUsername(currentUser.getUserName())
+                .withUsername(currentUser.getUsername())
                 .password(currentUser.getPassword())
                 .roles("USER")
                 .build();

@@ -99,7 +99,7 @@ public class AuthenticationService {
             throw new IllegalArgumentException("User with this email already exists");
         }
         // Check if user with this username already exists
-        if (getUserByName(user.getUserName()).getUserName() != null) {
+        if (getUserByName(user.getUsername()).getUsername() != null) {
             throw new IllegalArgumentException("User with this username already exists");
         }
 
@@ -110,7 +110,7 @@ public class AuthenticationService {
         try {
             PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, user.getEmail());
-            statement.setString(2, user.getUserName());
+            statement.setString(2, user.getUsername());
             statement.setString(3, encodedPassword);
 
             statement.executeUpdate();

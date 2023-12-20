@@ -2,22 +2,27 @@ package com.dawidfrankiewicz.todo.api.model;
 
 import java.util.regex.Pattern;
 
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GenerationType;
 
-@NoArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
     private final static String regexEmailPattern = "^(.+)@(\\S+)$";
 
-    private Integer id;
-    private String userName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "username", unique = true)
+    private String username;
+    @Column(name = "email", unique = true)
     private String email;
+    @Column(name = "password")
     private String password;
-
-    public User(String userName, String email, String password) {
-        this.userName = userName;
-        setEmail(email);
-        this.password = password;
-    }
 
     private boolean validateEmail(String email) {
         return Pattern.compile(regexEmailPattern)
@@ -33,12 +38,12 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
