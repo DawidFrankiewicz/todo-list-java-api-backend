@@ -1,8 +1,9 @@
 package com.dawidfrankiewicz.todo.api.controller;
 
 import com.dawidfrankiewicz.todo.api.model.Task;
+import com.dawidfrankiewicz.todo.api.model.User;
+import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
-import com.dawidfrankiewicz.todo.service.TaskService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/v1/task")
 @RequiredArgsConstructor
 public class TaskController {
-    private final TaskService taskService;
+    private final TaskRepository taskRepository;
     private final SecurityService securityService;
 
     private void validateTask(Task task) {
@@ -29,18 +30,19 @@ public class TaskController {
 
     @GetMapping()
     public List<Task> getTasks() {
-        int userId = securityService.getAuthorizedUserId();
+        // int userId = securityService.getAuthorizedUserId();
 
-        return taskService.getTasks(userId);
+        return taskRepository.findAll();
     }
 
     @GetMapping("/{id}")
     public Task getTask(@PathVariable int id) throws ResponseStatusException {
         int userId = securityService.getAuthorizedUserId();
 
-        Task recivedTask = taskService.getTask(userId, id);
+        Task recivedTask = taskRepository.findByIdForUser(userId, id);
 
-        if (recivedTask.getId() == null && recivedTask.getTitle() == null) {
+        // WARNING recivedTask.getId() == null &&
+        if (recivedTask.getTitle() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
         }
 
@@ -51,21 +53,24 @@ public class TaskController {
     public void addTask(@RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         validateTask(task);
+        task.setUserId(userId);
 
-        taskService.addTask(userId, task);
+        taskRepository.saveAndFlush(task);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable int id) {
-        int userId = securityService.getAuthorizedUserId();
-        taskService.deleteTask(userId, id);
-    }
+    // TODO: UPDATE THIS ENDPOINT
+    // @DeleteMapping("/{id}")
+    // public void deleteTask(@PathVariable int id) {
+    //     int userId = securityService.getAuthorizedUserId();
+    //     taskService.deleteTask(userId, id);
+    // }
 
-    @PutMapping("/{id}")
-    public void editTask(@PathVariable int id, @RequestBody Task task) {
-        int userId = securityService.getAuthorizedUserId();
-        validateTask(task);
+    // TODO: UPDATE THIS ENDPOINT
+    // @PutMapping("/{id}")
+    // public void editTask(@PathVariable int id, @RequestBody Task task) {
+    //     int userId = securityService.getAuthorizedUserId();
+    //     validateTask(task);
 
-        taskService.editTask(userId, id, task);
-    }
+    //     taskService.editTask(userId, id, task);
+    // }
 }

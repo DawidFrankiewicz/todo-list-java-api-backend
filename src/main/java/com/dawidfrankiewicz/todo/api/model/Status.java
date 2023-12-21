@@ -1,5 +1,6 @@
 package com.dawidfrankiewicz.todo.api.model;
 
+// TODO: Make this class an entity (like Uesr or Task)
 public class Status {
     private Integer id;
     private String status;
