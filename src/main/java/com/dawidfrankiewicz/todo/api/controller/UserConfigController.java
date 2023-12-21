@@ -38,7 +38,7 @@ public class UserConfigController {
         return statusRepository.findAllByUser_id(userId);
     }
 
-    @PostMapping("status")
+    @PostMapping("/status")
     public void addStatus(@RequestBody Status status) {
         User user = securityService.getAuthorizedUser();
         validateStatus(status);
@@ -48,7 +48,7 @@ public class UserConfigController {
     }
 
     @Transactional
-    @DeleteMapping("status/{id}")
+    @DeleteMapping("/status/{id}")
     public void deleteTask(@PathVariable int id) {
         int userId = securityService.getAuthorizedUserId();
         if (statusRepository.findByUser_idAndId(userId, id) == null) {
@@ -58,12 +58,11 @@ public class UserConfigController {
     }
 
     @Transactional
-    @PutMapping("status/{id}")
+    @PutMapping("/status/{id}")
     public void editStatus(@PathVariable int id, @RequestBody Status status) {
         int userId = securityService.getAuthorizedUserId();
         Status receviedstatus = statusRepository.findByUser_idAndId(userId, id);
         if (status.getStatus() != null) receviedstatus.setStatus(status.getStatus());
-
     }
 }
 

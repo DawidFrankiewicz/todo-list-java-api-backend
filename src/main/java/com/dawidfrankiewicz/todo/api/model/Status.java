@@ -1,6 +1,8 @@
 package com.dawidfrankiewicz.todo.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +16,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 @Entity
 @Getter
 @Setter
@@ -26,6 +27,7 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "status", unique = true)
     private String status;
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

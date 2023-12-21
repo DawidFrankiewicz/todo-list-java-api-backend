@@ -82,7 +82,5 @@ public class TaskController {
         if (task.getTitle() != null) receviedTask.setTitle(task.getTitle());
         if (task.getDescription() != null) receviedTask.setDescription(task.getDescription());
         if (task.getStatus() != null) receviedTask.setStatus(task.getStatus());
-
-
     }
 }
