@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Replace with JPA repository
 @Service
 public class UserConfigService {
     private Connection connection;

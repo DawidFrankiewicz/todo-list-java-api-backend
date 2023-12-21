@@ -42,7 +42,7 @@ public class AuthenticationController {
         }
     }
 
-    // TODO: REMOVE THIS ENDPOINT IN PRODUCTION
+    // TODO: REMOVE THIS ENDPOINT FOR PRODUCTION // ONLY FOR TESTING PURPOSES
     @GetMapping("/users")
     public List<User> getUsers() {
         try {

@@ -1,7 +1,6 @@
 package com.dawidfrankiewicz.todo.api.controller;
 
 import com.dawidfrankiewicz.todo.api.model.Task;
-import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
 
@@ -30,8 +29,6 @@ public class TaskController {
 
     @GetMapping()
     public List<Task> getTasks() {
-        // int userId = securityService.getAuthorizedUserId();
-
         return taskRepository.findAll();
     }
 
@@ -41,7 +38,6 @@ public class TaskController {
 
         Task recivedTask = taskRepository.findByIdForUser(userId, id);
 
-        // WARNING recivedTask.getId() == null &&
         if (recivedTask.getTitle() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
         }
