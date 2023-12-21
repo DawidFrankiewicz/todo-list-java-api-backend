@@ -75,13 +75,11 @@ public class SecurityConfiguration {
 
     @Bean
     public UserDetailsManager users(HttpSecurity http) throws Exception {
-        // TODO: Change deprecated method to lambda () -> {}
-        AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManagerBuilder.class)
-            .userDetailsService(userDetailsService)
-            .passwordEncoder(encoder())
-            .and()
-            .authenticationProvider(authenticationProvider())
-            .build();
+        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(encoder());
+        authenticationManagerBuilder.authenticationProvider(authenticationProvider());
+
+        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource());
         jdbcUserDetailsManager.setAuthenticationManager(authenticationManager);
