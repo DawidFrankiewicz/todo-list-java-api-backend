@@ -1,8 +1,11 @@
 package com.dawidfrankiewicz.todo.api.model;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,7 +36,9 @@ public class User {
     private String email;
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "userId")
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Task> tasks;
 
     private boolean validateEmail(String email) {
         return Pattern.compile(regexEmailPattern)

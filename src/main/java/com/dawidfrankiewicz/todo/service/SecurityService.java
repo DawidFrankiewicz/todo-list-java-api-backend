@@ -27,4 +27,16 @@ public class SecurityService {
 
         return authUser.getId();
     }
+
+    public User getAuthorizedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        User authUser = userRepository.findOneByUsername(currentPrincipalName);
+
+        if (authUser == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authorized");
+        }
+
+        return authUser;
+    }
 }

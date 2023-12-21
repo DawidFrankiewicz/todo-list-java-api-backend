@@ -1,6 +1,7 @@
 package com.dawidfrankiewicz.todo.api.controller;
 
 import com.dawidfrankiewicz.todo.api.model.Task;
+import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
 
@@ -35,7 +36,7 @@ public class TaskController {
     @GetMapping("/{id}")
     public Task getTask(@PathVariable int id) throws ResponseStatusException {
         int userId = securityService.getAuthorizedUserId();
-
+        
         Task recivedTask = taskRepository.findByIdForUser(userId, id);
 
         if (recivedTask.getTitle() == null) {
@@ -47,9 +48,9 @@ public class TaskController {
 
     @PostMapping()
     public void addTask(@RequestBody Task task) {
-        int userId = securityService.getAuthorizedUserId();
+        User user = securityService.getAuthorizedUser();
         validateTask(task);
-        task.setUserId(userId);
+        task.setUser(user);
 
         taskRepository.saveAndFlush(task);
     }

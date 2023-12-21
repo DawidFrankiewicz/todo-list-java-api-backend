@@ -1,9 +1,12 @@
 package com.dawidfrankiewicz.todo.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +18,9 @@ import jakarta.persistence.GenerationType;
 @Entity
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 @Table(name = "tasks")
 public class Task {
     @Id
@@ -29,9 +32,11 @@ public class Task {
     private String description;
     @Column(name = "status")
     private String status;
-    @Column(name = "user_id")
-    private int userId;
-    
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIncludeProperties("id")
+    private User user;
+
     public Task(String title, String description, String status) {
         this.title = title;
         this.description = description;
