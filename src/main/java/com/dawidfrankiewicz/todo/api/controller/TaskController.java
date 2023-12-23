@@ -73,9 +73,9 @@ public class TaskController {
     public void editTask(@PathVariable int id, @NotNull @RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         Task receviedTask = taskRepository.findByUser_idAndId(userId, id);
-        if (task.getTitle() != null) receviedTask.setTitle(task.getTitle());
-        if (task.getDescription() != null) receviedTask.setDescription(task.getDescription());
-        if (task.getStatus() != null) receviedTask.setStatus(task.getStatus());
+        receviedTask.setTitle(task.getTitle());
+        receviedTask.setDescription(task.getDescription());
+        receviedTask.setStatus(task.getStatus());
 
 
     }
