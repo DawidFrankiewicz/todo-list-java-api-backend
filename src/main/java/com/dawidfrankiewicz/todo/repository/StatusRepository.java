@@ -10,6 +10,5 @@ public interface StatusRepository extends JpaRepository<Status, Integer> {
 
     Status findByUser_idAndId(int userId, int id);
 
-
     void deleteByUser_idAndId(int user_Id, int id);
 }
