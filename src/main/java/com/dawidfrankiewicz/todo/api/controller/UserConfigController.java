@@ -38,7 +38,11 @@ public class UserConfigController {
         User user = securityService.getAuthorizedUser();
         status.setUser(user);
 
-        statusRepository.saveAndFlush(status);
+        try{
+            statusRepository.saveAndFlush(status);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @Transactional

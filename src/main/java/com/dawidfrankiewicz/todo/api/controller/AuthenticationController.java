@@ -2,6 +2,7 @@ package com.dawidfrankiewicz.todo.api.controller;
 
 import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.UserRepository;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,10 +27,8 @@ public class AuthenticationController {
     public void registerUser(@RequestBody @Valid User user) {
         try {
             userRepository.saveAndFlush(user);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        } finally {
-            userRepository.flush();
         }
     }
 
