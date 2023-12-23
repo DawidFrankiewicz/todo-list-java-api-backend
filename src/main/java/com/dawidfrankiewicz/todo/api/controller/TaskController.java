@@ -4,6 +4,8 @@ import com.dawidfrankiewicz.todo.api.model.Task;
 import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +30,6 @@ public class TaskController {
     private final TaskRepository taskRepository;
     private final SecurityService securityService;
 
-    private void validateTask(Task task) {
-        if (task.getTitle() == null || task.getDescription() == null || task.getStatus() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Object is not valid: {title, description, status}");
-        }
-    }
-
-
     @GetMapping()
     public List<Task> getTasks() {
         int userId = securityService.getAuthorizedUserId();
@@ -55,9 +50,8 @@ public class TaskController {
     }
 
     @PostMapping()
-    public void addTask(@RequestBody Task task) {
+    public void addTask(@RequestBody @Valid Task task) {
         User user = securityService.getAuthorizedUser();
-        validateTask(task);
         task.setUser(user);
 
         taskRepository.saveAndFlush(task);
@@ -76,7 +70,7 @@ public class TaskController {
 
     @Transactional
     @PutMapping("/{id}")
-    public void editTask(@PathVariable int id, @RequestBody Task task) {
+    public void editTask(@PathVariable int id, @NotNull @RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         Task receviedTask = taskRepository.findByUser_idAndId(userId, id);
         if (task.getTitle() != null) receviedTask.setTitle(task.getTitle());
