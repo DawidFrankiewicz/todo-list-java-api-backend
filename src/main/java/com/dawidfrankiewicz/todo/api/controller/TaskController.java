@@ -5,7 +5,6 @@ import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +69,7 @@ public class TaskController {
 
     @Transactional
     @PutMapping("/{id}")
-    public void editTask(@PathVariable int id, @NotNull @RequestBody Task task) {
+    public void editTask(@PathVariable int id, @Valid @RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         Task receviedTask = taskRepository.findByUser_idAndId(userId, id);
         receviedTask.setTitle(task.getTitle());
