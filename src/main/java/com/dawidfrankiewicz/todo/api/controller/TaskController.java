@@ -41,7 +41,7 @@ public class TaskController {
 
         Task recivedTask = taskRepository.findByUser_idAndId(userId, id);
 
-        if (recivedTask.getTitle() == null) {
+        if (recivedTask == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
         }
 
@@ -61,9 +61,6 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable int id) {
         int userId = securityService.getAuthorizedUserId();
-        if (taskRepository.findByUser_idAndId(userId, id) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
-        }
         taskRepository.deleteByUser_idAndId(userId, id);
     }
 
