@@ -4,6 +4,7 @@ import com.dawidfrankiewicz.todo.api.model.Task;
 import com.dawidfrankiewicz.todo.api.model.User;
 import com.dawidfrankiewicz.todo.repository.TaskRepository;
 import com.dawidfrankiewicz.todo.service.SecurityService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +29,6 @@ public class TaskController {
     private final TaskRepository taskRepository;
     private final SecurityService securityService;
 
-    private void validateTask(Task task) {
-        if (task.getTitle() == null || task.getDescription() == null || task.getStatus() == null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Object is not valid: {title, description, status}");
-        }
-    }
-
-
     @GetMapping()
     public List<Task> getTasks() {
         int userId = securityService.getAuthorizedUserId();
@@ -47,7 +41,7 @@ public class TaskController {
 
         Task recivedTask = taskRepository.findByUser_idAndId(userId, id);
 
-        if (recivedTask.getTitle() == null) {
+        if (recivedTask == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
         }
 
@@ -55,9 +49,8 @@ public class TaskController {
     }
 
     @PostMapping()
-    public void addTask(@RequestBody Task task) {
+    public void addTask(@RequestBody @Valid Task task) {
         User user = securityService.getAuthorizedUser();
-        validateTask(task);
         task.setUser(user);
 
         taskRepository.saveAndFlush(task);
@@ -68,19 +61,21 @@ public class TaskController {
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable int id) {
         int userId = securityService.getAuthorizedUserId();
-        if (taskRepository.findByUser_idAndId(userId, id) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
-        }
         taskRepository.deleteByUser_idAndId(userId, id);
     }
 
     @Transactional
     @PutMapping("/{id}")
-    public void editTask(@PathVariable int id, @RequestBody Task task) {
+    public void editTask(@PathVariable int id, @Valid @RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         Task receviedTask = taskRepository.findByUser_idAndId(userId, id);
-        if (task.getTitle() != null) receviedTask.setTitle(task.getTitle());
-        if (task.getDescription() != null) receviedTask.setDescription(task.getDescription());
-        if (task.getStatus() != null) receviedTask.setStatus(task.getStatus());
+
+        if (receviedTask == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
+        }
+
+        receviedTask.setTitle(task.getTitle());
+        receviedTask.setDescription(task.getDescription());
+        receviedTask.setStatus(task.getStatus());
     }
 }
