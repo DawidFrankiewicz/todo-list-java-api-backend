@@ -23,7 +23,6 @@ public class GlobalExceptionHandler {
         String response = "{\"status\":400,\"error\": \"Bad request\",\"message\":[\"" + errors + "\"]}";
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json");
-        ResponseEntity.ok().headers(responseHeaders);
         return ResponseEntity.ok().headers(responseHeaders).body(response);
     }
 }
