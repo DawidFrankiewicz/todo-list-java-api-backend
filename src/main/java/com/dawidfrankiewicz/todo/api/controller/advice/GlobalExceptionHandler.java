@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Object handleBindExceptionHandler(BindException exception) {
+    public String handleBindExceptionHandler(BindException exception) {
         String errors = exception.getFieldErrors().stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("\", \""));
         String response = "{\"status\":400,\"error\": \"Bad request\",\"message\":[\""+errors+"\"]}";
