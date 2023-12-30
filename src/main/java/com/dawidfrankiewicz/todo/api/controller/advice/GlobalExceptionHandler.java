@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Stream<String> handleBindExceptionHandler(BindException exception) {
-        return exception.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage);
+    public Object handleBindExceptionHandler(BindException exception) {
+        String errors = exception.getFieldErrors().stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("\", \""));
+        String response = "{\"status\":400,\"error\": \"Bad request\",\"message\":[\""+errors+"\"]}";
+        return response;
     }
 }
