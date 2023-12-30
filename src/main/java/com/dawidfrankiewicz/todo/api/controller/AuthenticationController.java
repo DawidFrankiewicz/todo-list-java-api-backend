@@ -31,14 +31,4 @@ public class AuthenticationController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
-
-    // TODO: REMOVE THIS ENDPOINT FOR PRODUCTION // ONLY FOR TESTING PURPOSES
-    @GetMapping("/users")
-    public List<User> getUsers() {
-        try {
-            return userRepository.findAll();
-        } catch (IllegalArgumentException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-    }
 }
