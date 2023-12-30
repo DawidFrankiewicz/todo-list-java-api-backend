@@ -69,6 +69,11 @@ public class TaskController {
     public void editTask(@PathVariable int id, @Valid @RequestBody Task task) {
         int userId = securityService.getAuthorizedUserId();
         Task receviedTask = taskRepository.findByUser_idAndId(userId, id);
+
+        if (receviedTask == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Task was not found");
+        }
+
         receviedTask.setTitle(task.getTitle());
         receviedTask.setDescription(task.getDescription());
         receviedTask.setStatus(task.getStatus());

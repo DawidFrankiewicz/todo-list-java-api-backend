@@ -49,9 +49,6 @@ public class UserConfigController {
     @DeleteMapping("/status/{id}")
     public void deleteTask(@PathVariable int id) {
         int userId = securityService.getAuthorizedUserId();
-        if (statusRepository.findByUser_idAndId(userId, id) == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Status was not found");
-        }
         statusRepository.deleteByUser_idAndId(userId, id);
     }
 
@@ -60,6 +57,11 @@ public class UserConfigController {
     public void editStatus(@PathVariable int id, @Valid @RequestBody Status status) {
         int userId = securityService.getAuthorizedUserId();
         Status receviedstatus = statusRepository.findByUser_idAndId(userId, id);
+
+        if (receviedstatus == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Status was not found");
+        }
+
         if (status.getStatus() != null) receviedstatus.setStatus(status.getStatus());
     }
 }
